@@ -27,26 +27,22 @@ variable "labels" {
 
 variable "master_server_type" {
   type        = string
-  default     = "cpx11"
   description = "Master server type (e.g. cpx11)"
 }
 
 variable "worker_server_type" {
   type        = string
-  default     = "cpx11"
   description = "Workers server type (e.g. cpx11)"
 }
 
 variable "workers_count" {
   type        = number
-  default     = 1
   description = "How many worker servers to provision"
 }
 
 variable "fips_count" {
   type        = number
-  default     = 1
-  description = "How many floating IPs to provision"
+  description = "How many floating IPs to provision. Used by MetalLB for LoadBalancer services"
 }
 
 variable "ssh_port" {
