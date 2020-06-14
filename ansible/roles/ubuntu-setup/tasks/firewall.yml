@@ -1,0 +1,15 @@
+---
+- name: make sure /etc/iptables exists
+  file:
+    path: /etc/iptables
+    state: directory
+
+- name: create iptables save file
+  template:
+    dest: /etc/iptables/rules.{{ item }}
+    src: templates/iptables-save-{{ item }}.j2
+    mode: "0640"
+  loop:
+    - v4
+    - v6
+  notify: reload iptables rules

@@ -1,0 +1,17 @@
+---
+- name: update apt cache
+  apt:
+    force_apt_get: True
+    update_cache: True
+
+- name: perform a dist-upgrade
+  apt:
+    force_apt_get: True
+    upgrade: dist
+
+- name: install additional packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - iptables-persistent

@@ -1,0 +1,12 @@
+---
+- name: make sure /etc/rancher/k3s exists
+  file:
+    path: /etc/rancher/k3s
+    state: directory
+
+- name: write node join token
+  copy:
+    content: "{{ hostvars[groups['master'][0]]['k3s_node_join_token'] }}"
+    dest: /etc/rancher/k3s/node-token
+    mode: "0600"
+  register: k3s_node_token

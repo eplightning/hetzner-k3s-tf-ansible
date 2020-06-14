@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hcloud-ip-floater
+spec:
+  template:
+    spec:
+      serviceAccountName: hcloud-ip-floater
+      containers:
+        - name: hcloud-ip-floater
+          image: bslawianowski/hcloud-ip-floater:latest

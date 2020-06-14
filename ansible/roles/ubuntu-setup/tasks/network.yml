@@ -1,0 +1,6 @@
+---
+- name: set MACAddressPolicy=none for bridge/veth devices
+  template:
+    dest: /etc/systemd/network/90-vethbridgemac.link
+    src: templates/90-vethbridgemac.link.j2
+  notify: restart networkd

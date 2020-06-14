@@ -1,0 +1,9 @@
+---
+- name: read join token
+  slurp:
+    src: /var/lib/rancher/k3s/server/node-token
+  register: node_token_slurped
+
+- name: set join token fact
+  set_fact:
+    k3s_node_join_token: "{{ node_token_slurped['content'] | b64decode }}"

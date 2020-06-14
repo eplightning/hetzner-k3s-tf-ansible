@@ -1,0 +1,17 @@
+*filter
+:INTERNET-INGRESS - [0:0]
+-A INPUT -i eth0 -j INTERNET-INGRESS
+-A INTERNET-INGRESS -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+-A INTERNET-INGRESS -m conntrack --ctstate INVALID -j DROP
+-A INTERNET-INGRESS -p icmp --icmp-type echo-request -j ACCEPT
+# TODO: Aren't those 2 taken care of by RELATED ctstate?
+-A INTERNET-INGRESS -p icmp --icmp-type destination-unreachable -j ACCEPT
+-A INTERNET-INGRESS -p icmp --icmp-type time-exceeded -j ACCEPT
+{% for port in open_tcp_ports %}
+-A INTERNET-INGRESS -p tcp -m tcp --dport {{ port }} -j ACCEPT
+{% endfor %}
+{% for port in open_udp_ports %}
+-A INTERNET-INGRESS -p udp -m udp --dport {{ port }} -j ACCEPT
+{% endfor %}
+-A INTERNET-INGRESS -j DROP
+COMMIT

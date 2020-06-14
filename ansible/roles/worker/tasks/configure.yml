@@ -1,0 +1,18 @@
+---
+- name: create k3s systemd service unit
+  vars:
+    k3s_agent_args: |-
+      --token-file /etc/rancher/k3s/node-token \
+      --server https://{{ hostvars[groups['master'][0]]['private_ip'] }}:6443 \
+      {{ k3s_default_agent_args }}
+  template:
+    src: templates/k3s.service.j2
+    dest: /etc/systemd/system/k3s.service
+  register: k3s_unit
+
+- name: start k3s server
+  systemd:
+    name: k3s
+    daemon_reload: yes
+    enabled: yes
+    state: "{{ 'restarted' if (k3s_binary.changed or k3s_unit.changed or k3s_node_token.changed) else 'started' }}"

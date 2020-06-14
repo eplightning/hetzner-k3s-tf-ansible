@@ -1,0 +1,6 @@
+k3s_version: v1.18.3+k3s1
+k3s_download_url: https://github.com/rancher/k3s/releases/download/{{ k3s_version }}/k3s
+k3s_checksum: sha256:e9ac0c0cfec9d36c3d86450467cfd147c6ee944eeef17d5d245aec9af7682898
+k3s_default_agent_args: |-
+  --kubelet-arg cloud-provider=external \
+  --flannel-iface enp7s0

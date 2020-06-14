@@ -1,0 +1,13 @@
+---
+- name: make sure /tmp/kube-manifests exists
+  file:
+    path: /tmp/kube-manifests
+    state: directory
+    owner: "{{ ansible_user }}"
+    mode: "0700"
+
+- name: rsync manifests
+  synchronize:
+    src: files/
+    dest: /tmp/kube-manifests
+    delete: yes

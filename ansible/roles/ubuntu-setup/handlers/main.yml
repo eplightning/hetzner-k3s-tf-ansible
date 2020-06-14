@@ -1,0 +1,12 @@
+---
+# FIXME: this breaks kube-proxy until first config refresh ...
+- name: reload iptables rules
+  systemd:
+    name: iptables
+    state: restarted
+    enabled: yes
+
+- name: restart networkd
+  systemd:
+    name: systemd-networkd
+    state: restarted

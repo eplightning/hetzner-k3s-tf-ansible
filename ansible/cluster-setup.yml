@@ -1,0 +1,20 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    - ubuntu-setup
+
+- hosts: master
+  become: yes
+  roles:
+    - master
+
+- hosts: worker
+  become: yes
+  roles:
+    - worker
+
+- hosts: master
+  become: yes
+  roles:
+    - addons
