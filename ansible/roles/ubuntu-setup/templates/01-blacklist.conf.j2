@@ -1,0 +1,11 @@
+if $msg contains "-containerd-" and $msg contains ".mount: Succeeded." then {
+    stop
+}
+
+if $msg contains "/kubernetes.io~configmap/" and $msg contains "Setting volume ownership for" then {
+    stop
+}
+
+if $msg contains "/kubernetes.io~secret/" and $msg contains "Setting volume ownership for" then {
+    stop
+}

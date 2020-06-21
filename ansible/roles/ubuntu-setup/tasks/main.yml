@@ -6,3 +6,5 @@
 - import_tasks: firewall.yml
 
 - import_tasks: sysctl.yml
+
+- import_tasks: logging.yml

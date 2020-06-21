@@ -10,3 +10,13 @@
   systemd:
     name: systemd-networkd
     state: restarted
+
+- name: restart rsyslog
+  systemd:
+    name: rsyslog
+    state: restarted
+
+- name: restart journald
+  systemd:
+    name: systemd-journald
+    state: restarted
