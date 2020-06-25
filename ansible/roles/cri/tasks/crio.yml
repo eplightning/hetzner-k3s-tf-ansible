@@ -1,0 +1,40 @@
+---
+- name: add opensuse apt key
+  apt_key:
+    url: https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/Release.key
+    state: present
+
+- name: add cri-o apt repository
+  template:
+    src: templates/crio.list.j2
+    dest: /etc/apt/sources.list.d/crio.list
+
+- name: install cri-o and CNI plugins
+  apt:
+    force_apt_get: True
+    update_cache: True
+    state: present
+    name: "{{ item }}"
+  loop:
+  - cri-o
+  - containernetworking-plugins
+
+- name: create crio.conf
+  template:
+    src: templates/crio.conf.j2
+    dest: /etc/crio/crio.conf
+  register: crio_conf_changed
+
+- name: clear CNI config directory
+  file:
+    path: "/etc/cni/net.d/{{ item }}"
+    state: absent
+  loop:
+    - 100-crio-bridge.conf
+    - 200-loopback.conf
+
+- name: enable and start cri-o
+  systemd:
+    name: crio
+    state: "{{ 'restarted' if crio_conf_changed else 'started' }}"
+    enabled: yes

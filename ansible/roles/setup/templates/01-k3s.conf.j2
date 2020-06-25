@@ -1,4 +1,4 @@
-if $msg contains "-containerd-" and $msg contains ".mount: Succeeded." then {
+if $msg contains "runc" and $msg contains ".mount: Succeeded." then {
     stop
 }
 

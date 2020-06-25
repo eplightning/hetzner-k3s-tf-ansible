@@ -2,6 +2,8 @@
 - import_tasks: sync-manifests.yml
   when: enabled_addons|length > 0
 
+- import_tasks: csi.yml
+
 - import_tasks: metallb.yml
   when: "'metallb' in enabled_addons"
 

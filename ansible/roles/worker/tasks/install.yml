@@ -13,6 +13,4 @@
     src: /usr/local/bin/k3s
     path: /usr/local/bin/{{ item }}
   loop:
-    - ctr
     - kubectl
-    - crictl

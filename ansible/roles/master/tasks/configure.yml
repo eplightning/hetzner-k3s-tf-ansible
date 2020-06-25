@@ -1,16 +1,17 @@
 ---
 - name: create k3s systemd service unit
   vars:
-    k3s_server_args: |-
-      --advertise-address {{ private_ip }} \
-      --cluster-cidr {{ k3s_cluster_cidr }} \
-      --service-cidr {{ k3s_service_cidr }} \
-      --cluster-dns {{ k3s_cluster_dns }} \
-      --tls-san {{ private_ip }} \
-      --tls-san {{ public_ip }} \
+    k3s_server_args: >-
+      --advertise-address {{ private_ip }}
+      --cluster-cidr {{ k3s_cluster_cidr }}
+      --service-cidr {{ k3s_service_cidr }}
+      --cluster-dns {{ k3s_cluster_dns }}
+      --tls-san {{ private_ip }}
+      --tls-san {{ public_ip }}
       {% if master_external_hostname|length %}
-      --tls-san {{ master_external_hostname }} \
+      --tls-san {{ master_external_hostname }}
       {% endif %}
+      {{ k3s_common_args }}
       {{ k3s_default_server_args }}
   template:
     src: templates/k3s.service.j2

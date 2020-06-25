@@ -4,9 +4,16 @@
     path: /etc/rancher/k3s
     state: directory
 
+- name: fetch token from master
+  slurp:
+    src: /var/lib/rancher/k3s/server/node-token
+  register: node_token_slurped
+  delegate_to: "{{ groups['master'][0] }}"
+  run_once: true
+
 - name: write node join token
   copy:
-    content: "{{ hostvars[groups['master'][0]]['k3s_node_join_token'] }}"
+    content: "{{ node_token_slurped['content'] | b64decode }}"
     dest: /etc/rancher/k3s/node-token
     mode: "0600"
   register: k3s_node_token

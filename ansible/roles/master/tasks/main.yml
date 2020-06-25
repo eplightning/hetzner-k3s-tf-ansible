@@ -4,5 +4,3 @@
 - import_tasks: configure.yml
 
 - import_tasks: initial-manifests.yml
-
-- import_tasks: token.yml

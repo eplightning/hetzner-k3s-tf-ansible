@@ -1,0 +1,8 @@
+---
+- name: template CSI config
+  template:
+    src: templates/csi-config.yaml.j2
+    dest: /tmp/kube-manifests/csi/secret.yaml
+
+- name: install CSI
+  command: kubectl apply -k /tmp/kube-manifests/csi

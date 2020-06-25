@@ -1,15 +1,10 @@
-k3s_version: v1.18.3+k3s1
-k3s_download_url: https://github.com/rancher/k3s/releases/download/{{ k3s_version }}/k3s
-k3s_checksum: sha256:e9ac0c0cfec9d36c3d86450467cfd147c6ee944eeef17d5d245aec9af7682898
-k3s_cluster_cidr: '10.60.0.0/16'
 k3s_service_cidr: '10.61.0.0/16'
 k3s_cluster_dns: '10.61.0.10'
-k3s_default_server_args: |-
-  --disable-cloud-controller \
-  --node-taint "node-role.kubernetes.io/master:NoSchedule" \
-  --kubelet-arg cloud-provider=external \
-  --kube-apiserver-arg "service-node-port-range=1-32767" \
-  --disable servicelb \
-  --disable traefik \
-  --flannel-backend host-gw \
-  --flannel-iface enp7s0
+k3s_default_server_args: >-
+  --disable-cloud-controller
+  --disable-network-policy
+  --node-taint "node-role.kubernetes.io/master:NoSchedule"
+  --kube-apiserver-arg "service-node-port-range=1-32767"
+  --disable servicelb
+  --disable traefik
+  --flannel-backend none

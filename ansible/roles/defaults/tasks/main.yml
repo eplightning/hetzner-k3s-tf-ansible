@@ -1,0 +1,4 @@
+---
+- name: load common defaults
+  debug:
+    msg: loaded variables from path roles/defaults/defaults/main.yml

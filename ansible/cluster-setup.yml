@@ -1,20 +1,22 @@
 ---
 - hosts: all
-  become: yes
   roles:
-    - ubuntu-setup
+  - defaults
+  - setup
+  - cri
 
 - hosts: master
-  become: yes
   roles:
-    - master
+  - defaults
+  - master
+  - cni
 
 - hosts: worker
-  become: yes
   roles:
-    - worker
+  - defaults
+  - worker
 
 - hosts: master
-  become: yes
   roles:
-    - addons
+  - defaults
+  - addons

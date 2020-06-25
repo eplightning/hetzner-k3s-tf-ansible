@@ -1,0 +1,17 @@
+---
+- name: download calicoctl binary
+  get_url:
+    url: "{{ calicoctl_url }}"
+    checksum: "{{ calicoctl_checksum }}"
+    dest: /usr/local/bin/calicoctl
+    mode: "0755"
+
+- name: make sure /etc/calico exists
+  file:
+    path: /etc/calico
+    state: directory
+
+- name: create calicoctl config
+  template:
+    src: templates/calicoctl.cfg
+    dest: /etc/calico/calicoctl.cfg
