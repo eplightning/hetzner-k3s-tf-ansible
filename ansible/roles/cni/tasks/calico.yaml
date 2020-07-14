@@ -9,3 +9,5 @@
   retries: 5
   delay: 10
   shell: kubectl wait --for=condition=Available deployment/calico-kube-controllers -n kube-system
+  register: result
+  until: result.rc == 0

@@ -25,6 +25,17 @@
     dest: /etc/crio/crio.conf
   register: crio_conf_changed
 
+- name: create systemd crio.service dropin dir
+  file:
+    path: /etc/systemd/system/crio.service.d
+    state: directory
+
+- name: create systemd crio.service dropin file
+  template:
+    src: templates/crio.service
+    dest: /etc/systemd/system/crio.service.d/k3s.conf
+  register: crio_systemd
+
 - name: clear CNI config directory
   file:
     path: "/etc/cni/net.d/{{ item }}"
@@ -36,5 +47,6 @@
 - name: enable and start cri-o
   systemd:
     name: crio
-    state: "{{ 'restarted' if crio_conf_changed else 'started' }}"
+    state: "{{ 'restarted' if (crio_conf_changed.changed or crio_systemd.changed) else 'started' }}"
     enabled: yes
+    daemon_reload: yes

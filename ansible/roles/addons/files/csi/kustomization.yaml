@@ -6,3 +6,5 @@ resources:
 - secret.yaml
 patchesStrategicMerge:
 - non-default.yaml
+- verbosity-node.yaml
+- verbosity-controller.yaml

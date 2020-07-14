@@ -3592,7 +3592,7 @@ spec:
               value: "false"
             # Set Felix logging to "info"
             - name: FELIX_LOGSEVERITYSCREEN
-              value: "info"
+              value: "warning"
             - name: FELIX_HEALTHENABLED
               value: "true"
           securityContext:

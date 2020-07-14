@@ -9,3 +9,7 @@ if $msg contains "/kubernetes.io~configmap/" and $msg contains "Setting volume o
 if $msg contains "/kubernetes.io~secret/" and $msg contains "Setting volume ownership for" then {
     stop
 }
+
+if $msg contains "But it is not owned by kubelet" and $msg contains "mysql.presslabs.org/NodeInitialized" then {
+    stop
+}
