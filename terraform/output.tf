@@ -1,5 +1,5 @@
-output "master_ipv4_address" {
-  value = hcloud_server.kube_master.ipv4_address
+output "master_ipv4_addresses" {
+  value = hcloud_server.kube_master[*].ipv4_address
 }
 
 output "worker_ipv4_addresses" {

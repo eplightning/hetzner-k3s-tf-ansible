@@ -5,4 +5,5 @@
 terraform.tfstate
 terraform.tfstate.*
 terraform.tfvars
+terraform.tfvars.*
 .terraform

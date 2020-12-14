@@ -53,7 +53,7 @@ spec:
           effect: "NoSchedule"
       hostNetwork: true
       containers:
-        - image: hetznercloud/hcloud-cloud-controller-manager:v1.5.2
+        - image: hetznercloud/hcloud-cloud-controller-manager:v1.8.1
           name: hcloud-cloud-controller-manager
           command:
             - "/bin/hcloud-cloud-controller-manager"
@@ -81,3 +81,5 @@ spec:
                 secretKeyRef:
                   name: hcloud
                   key: network
+            - name: HCLOUD_LOAD_BALANCERS_ENABLED
+              value: "false"

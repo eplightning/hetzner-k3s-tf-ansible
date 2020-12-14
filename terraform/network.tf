@@ -18,7 +18,9 @@ resource "hcloud_network_subnet" "eu1" {
 }
 
 resource "hcloud_server_network" "kube_master_main" {
-  server_id  = hcloud_server.kube_master.id
+  count = var.masters_count
+
+  server_id  = hcloud_server.kube_master[count.index].id
   network_id = hcloud_network.main.id
 }
 
@@ -29,13 +31,14 @@ resource "hcloud_server_network" "kube_worker_main" {
   network_id = hcloud_network.main.id
 }
 
-resource "hcloud_rdns" "kube_master0" {
-  count = var.master_external_hostname != "" ? 1 : 0
+resource "hcloud_floating_ip" "apiserver_fip" {
+  count = var.apiserver_loadbalancer_type == "fip" ? 1 : 0
 
-  server_id = hcloud_server.kube_master.id
+  name = "kube-apiserver"
+  labels = var.labels
 
-  ip_address = hcloud_server.kube_master.ipv4_address
-  dns_ptr    = var.master_external_hostname
+  type = "ipv4"
+  home_location = data.hcloud_location.location1.name
 }
 
 resource "hcloud_floating_ip" "kube_fip" {

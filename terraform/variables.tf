@@ -13,12 +13,6 @@ variable "location" {
   description = "Hetzner location (e.g. fsn1) for servers, networks"
 }
 
-variable "master_external_hostname" {
-  type        = string
-  default     = ""
-  description = "Optional additional hostname for master server. Will be used for RDNS setup"
-}
-
 variable "labels" {
   type        = map
   default     = {}
@@ -33,6 +27,11 @@ variable "master_server_type" {
 variable "worker_server_type" {
   type        = string
   description = "Workers server type (e.g. cpx11)"
+}
+
+variable "masters_count" {
+  type        = number
+  description = "How many master servers to provision"
 }
 
 variable "workers_count" {
@@ -63,8 +62,38 @@ variable "additional_open_udp_ports" {
   description = "Additional UDP ports to open"
 }
 
+variable "cni_type" {
+  type = string
+  default = "embedded"
+  description = "Which CNI plugin to use. Supported: embedded, calico"
+}
+
+variable "loadbalancer_type" {
+  type = string
+  default = "hetzner"
+  description = "Which Kubernetes LoadBalancer implementation to use. Supported: hetzner, metallb, none"
+}
+
+variable "apiserver_datastore" {
+  type = string
+  default = "etcd"
+  description = "Which datastore to use for Kubernetes, etcd will be forced in case of multi-master setup. Supported: etcd, sqlite"
+}
+
+variable "apiserver_external_hostname" {
+  type        = string
+  default     = ""
+  description = "Optional additional hostname for API server. Will be added to TLS certificate"
+}
+
+variable "apiserver_loadbalancer_type" {
+  type = string
+  default = "fip"
+  description = "Which api-server LoadBalancer implementation to use. Supported: loadbalancer, fip, none"
+}
+
 variable "enabled_addons" {
   type        = list(string)
-  default     = ["metallb", "contour", "cert-manager"]
-  description = "Which addons to install. Supported: metallb, contour, cert-manager"
+  default     = ["contour", "cert-manager"]
+  description = "Which addons to install. Supported: contour, cert-manager"
 }

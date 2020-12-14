@@ -1,0 +1,2 @@
+---
+apiserver_loadbalancer_type: fip

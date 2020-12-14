@@ -15,7 +15,7 @@ spec:
           - --kubelet-registration-path=/var/lib/kubelet/plugins/csi.hetzner.cloud/csi.sock
           - --v=2
         - name: hcloud-csi-driver
-          image: bslawianowski/hcloud-csi-driver:latest
+          image: hetznercloud/hcloud-csi-driver:1.5.1
           env:
           - name: LOG_LEVEL
             value: warn
