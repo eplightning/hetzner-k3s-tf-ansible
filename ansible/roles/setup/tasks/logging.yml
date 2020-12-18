@@ -4,9 +4,3 @@
     dest: /etc/rsyslog.d/01-k3s.conf
     src: templates/01-k3s.conf.j2
   notify: restart rsyslog
-
-- name: setup journald
-  template:
-    dest: /etc/systemd/journald.conf
-    src: templates/journald.conf.j2
-  notify: restart journald

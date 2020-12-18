@@ -5,16 +5,7 @@
     state: link
     src: /usr/local/bin/k3s
     path: /usr/local/bin/{{ item }}
+    follow: no
   loop:
     - crictl
     - ctr
-
-- name: get crictl completion
-  shell: "/usr/local/bin/crictl completion"
-  changed_when: false
-  register: crictl_completion
-
-- name: install crictl completion
-  copy:
-    dest: /usr/share/bash-completion/completions/crictl
-    content: "{{ crictl_completion.stdout }}"

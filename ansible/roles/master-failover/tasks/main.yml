@@ -1,0 +1,3 @@
+---
+- import_tasks: keepalived.yml
+  when: keepalived_install

@@ -1,6 +1,5 @@
 k3s_cluster_cidr: '10.60.0.0/16'
 cri_socket: /var/run/crio/crio.sock
-cgroup_manager: cgroupfs
 container_runtime_type: embedded
 cni_type: embedded
 k3s_version: v1.19.5+k3s1
@@ -12,5 +11,9 @@ k3s_common_args: >-
   {% if container_runtime_type != 'embedded' %}
   --container-runtime-endpoint "{{ cri_socket }}"
   {% endif %}
+  {% if cni_type != 'embedded' %}
   --no-flannel
+  {% else %}
+  --flannel-iface enp7s0
+  {% endif %}
   --pause-image "{{ pause_image }}"

@@ -22,6 +22,10 @@ resource "hcloud_server_network" "kube_master_main" {
 
   server_id  = hcloud_server.kube_master[count.index].id
   network_id = hcloud_network.main.id
+
+  lifecycle {
+    ignore_changes = [alias_ips]
+  }
 }
 
 resource "hcloud_server_network" "kube_worker_main" {
@@ -32,7 +36,7 @@ resource "hcloud_server_network" "kube_worker_main" {
 }
 
 resource "hcloud_floating_ip" "apiserver_fip" {
-  count = var.apiserver_loadbalancer_type == "fip" ? 1 : 0
+  count = var.master_apiserver_loadbalancer == "fip" ? 1 : 0
 
   name = "kube-apiserver"
   labels = var.labels
@@ -49,4 +53,45 @@ resource "hcloud_floating_ip" "kube_fip" {
 
   type          = "ipv4"
   home_location = data.hcloud_location.location1.name
+}
+
+resource "hcloud_load_balancer" "master" {
+  count = var.master_apiserver_loadbalancer == "hetznerlb" ? 1 : 0
+
+  load_balancer_type = "lb11"
+  network_zone = hcloud_network_subnet.eu1.network_zone
+  name = "kube-master"
+  labels = var.labels
+}
+
+resource "hcloud_load_balancer_network" "master" {
+  count = var.master_apiserver_loadbalancer == "hetznerlb" ? 1 : 0
+
+  load_balancer_id = hcloud_load_balancer.master[0].id
+  subnet_id = hcloud_network_subnet.eu1.id
+}
+
+resource "hcloud_load_balancer_target" "master" {
+  count = var.master_apiserver_loadbalancer == "hetznerlb" ? var.masters_count : 0
+
+  load_balancer_id = hcloud_load_balancer.master[0].id
+  type = "server"
+  server_id = hcloud_server_network.kube_master_main[count.index].server_id
+  use_private_ip = true
+}
+
+resource "hcloud_load_balancer_service" "apiserver" {
+  count = var.master_apiserver_loadbalancer == "hetznerlb" ? 1 : 0
+
+  load_balancer_id = hcloud_load_balancer.master[0].id
+  protocol = "tcp"
+  listen_port = 443
+  destination_port = 6443
+
+  health_check {
+    interval = 10
+    port = 6443
+    protocol = "tcp"
+    timeout = 10
+  }
 }

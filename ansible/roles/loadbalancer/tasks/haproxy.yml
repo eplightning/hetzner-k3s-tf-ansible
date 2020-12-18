@@ -1,0 +1,20 @@
+---
+- name: install additional packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - haproxy
+
+- name: create haproxy config
+  template:
+    src: templates/haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+  register: haproxy_config
+
+- name: start haproxy
+  systemd:
+    name: haproxy
+    daemon_reload: yes
+    enabled: yes
+    state: "{{ 'restarted' if haproxy_config.changed else 'started' }}"

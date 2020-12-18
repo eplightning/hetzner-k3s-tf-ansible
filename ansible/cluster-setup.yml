@@ -8,13 +8,21 @@
 - hosts: master
   roles:
   - defaults
-  - loadbalancer
+  - master-failover
+  - role: loadbalancer
+    vars:
+      haproxy_install: "{{ haproxy_master_install }}"
   - master
   - cni
 
 - hosts: worker
   roles:
   - defaults
+  - role: loadbalancer
+    vars:
+      haproxy_install: "{{ haproxy_worker_install }}"
+      haproxy_listen_address: "127.0.0.1"
+      haproxy_listen_port: "6443"
   - worker
 
 - hosts: master

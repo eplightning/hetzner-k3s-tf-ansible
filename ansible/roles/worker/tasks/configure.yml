@@ -3,7 +3,8 @@
   vars:
     k3s_agent_args: >-
       --token-file /etc/rancher/k3s/node-token
-      --server https://{{ hostvars[groups['master'][0]]['private_ip'] }}:6443
+      --server https://{{ k3s_worker_master_address }}
+      --node-ip {{ private_ip }}
       {{ k3s_default_agent_args }}
       {{ k3s_common_args }}
   template:

@@ -1,3 +1,0 @@
-[Service]
-Delegate=yes
-Slice=podruntime.slice

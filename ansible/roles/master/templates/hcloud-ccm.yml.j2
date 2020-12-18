@@ -82,4 +82,4 @@ spec:
                   name: hcloud
                   key: network
             - name: HCLOUD_LOAD_BALANCERS_ENABLED
-              value: "false"
+              value: "{{ use_hetzner_loadbalancers | string | lower }}"

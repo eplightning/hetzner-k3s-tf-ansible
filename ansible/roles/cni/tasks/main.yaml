@@ -1,4 +1,0 @@
----
-- import_tasks: calicoctl.yaml
-
-- import_tasks: calico.yaml

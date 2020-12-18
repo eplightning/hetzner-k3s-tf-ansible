@@ -1,9 +1,3 @@
 ---
-- import_tasks: crictl.yml
-  when: container_runtime_type == 'cri-o'
-
-- import_tasks: crio.yml
-  when: container_runtime_type == 'cri-o'
-
 - import_tasks: embedded.yml
   when: container_runtime_type == 'embedded'

@@ -1,1 +1,2 @@
 k3s_default_agent_args: ""
+k3s_worker_master_address: '{{ hostvars[groups["master"][0]]["private_ip"] }}:6443'

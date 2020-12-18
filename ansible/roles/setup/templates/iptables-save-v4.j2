@@ -13,5 +13,8 @@
 {% for port in open_udp_ports %}
 -A INTERNET-INGRESS -p udp -m udp --dport {{ port }} -j ACCEPT
 {% endfor %}
+{% if allow_public_vrrp %}
+-A INTERNET-INGRESS -p vrrp -j ACCEPT
+{% endif %}
 -A INTERNET-INGRESS -j DROP
 COMMIT

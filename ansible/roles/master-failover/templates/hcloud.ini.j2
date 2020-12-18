@@ -1,0 +1,12 @@
+[global]
+ServerID={{ hcloud_server_id }}
+Token={{ hcloud_token }}
+
+[KUBE_MASTER]
+{% if failover_type == 'fip' %}
+FloatingIPs={{ failover_floating_ip }}
+{% else %}
+PrivateNetworkID={{ private_network_id }}
+PrivateIPs={{ failover_ip }}
+ServerIDs={% for host in groups['master'] %}{{ hostvars[host]['hcloud_server_id'] }},{% endfor %}
+{% endif %}

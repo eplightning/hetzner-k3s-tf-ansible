@@ -1,0 +1,45 @@
+global_defs {
+   enable_script_security
+   vrrp_check_unicast_src
+}
+
+vrrp_instance KUBE_MASTER {
+    state BACKUP
+
+    {% if failover_type == 'fip' %}
+    interface eth0
+    unicast_src_ip {{ public_ip }}
+    unicast_peer {
+    {% for host in groups['master'] %}
+    {% if inventory_hostname != host %}
+        {{ hostvars[host]['public_ip'] }}
+    {% endif %}
+    {% endfor %}
+    }
+    {% else %}
+    interface enp7s0
+    unicast_src_ip {{ private_ip }}
+    unicast_peer {
+    {% for host in groups['master'] %}
+    {% if inventory_hostname != host %}
+        {{ hostvars[host]['private_ip'] }}
+    {% endif %}
+    {% endfor %}
+    }
+    {% endif %}
+
+    virtual_router_id 50
+    priority 100
+    advert_int 1
+    nopreempt
+    notify /usr/local/bin/hcloud-keepalived-notify
+
+    authentication {
+        auth_type PASS
+        auth_pass {{ failover_password }}
+    }
+
+    virtual_ipaddress {
+        {{ failover_ip }}
+    }
+}
