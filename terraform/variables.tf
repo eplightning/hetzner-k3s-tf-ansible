@@ -13,12 +13,6 @@ variable "location" {
   description = "Hetzner location (e.g. fsn1) for servers, networks"
 }
 
-variable "master_external_hostname" {
-  type        = string
-  default     = ""
-  description = "Optional additional hostname for master server. Will be used for RDNS setup"
-}
-
 variable "labels" {
   type        = map
   default     = {}
@@ -35,6 +29,11 @@ variable "worker_server_type" {
   description = "Workers server type (e.g. cpx11)"
 }
 
+variable "masters_count" {
+  type        = number
+  description = "How many master servers to provision"
+}
+
 variable "workers_count" {
   type        = number
   description = "How many worker servers to provision"
@@ -42,7 +41,7 @@ variable "workers_count" {
 
 variable "fips_count" {
   type        = number
-  description = "How many floating IPs to provision. Used by MetalLB for LoadBalancer services"
+  description = "How many floating IPs to provision. Used by MetalLB addon"
 }
 
 variable "ssh_port" {
@@ -63,8 +62,53 @@ variable "additional_open_udp_ports" {
   description = "Additional UDP ports to open"
 }
 
+variable "cni_type" {
+  type = string
+  default = "embedded"
+  description = "Which CNI plugin to use. Supported: embedded (flannel), calico"
+}
+
+variable "use_hetzner_loadbalancers" {
+  type = bool
+  default = true
+  description = "Use Hetzner Load Balancers. This conflicts with MetalLB"
+}
+
 variable "enabled_addons" {
   type        = list(string)
-  default     = ["metallb", "contour", "cert-manager"]
-  description = "Which addons to install. Supported: metallb, contour, cert-manager"
+  default     = ["contour", "cert-manager", "csi"]
+  description = "Which addons to install. Supported: contour, cert-manager, metallb, csi"
 }
+
+variable "master_ha_enabled" {
+  type = bool
+  default = true
+  description = "Setup K3s in HA mode. If true, etcd datastore will be used instead of sqlite. Will be forced to true if masters_count > 1"
+}
+
+variable "master_apiserver_loadbalancer" {
+  type = string
+  default = "none"
+  description = "What kind of apiserver loadbalancing to use. Supported: hetznerlb, fip, privatenetwork, none"
+}
+
+variable "master_apiserver_advertise" {
+  type = string
+  default = "privateip"
+  description = "Which address should master servers advertise as. Supported: privateip, loadbalancer"
+}
+
+variable "master_apiserver_external_address" {
+  type = string
+  default = ""
+  description = "Additional hostname that will be added to k3s apiserver TLS certificates"
+}
+
+variable "worker_master_connection" {
+  type = string
+  default = ""
+  description = "How should workers connect to master servers. Will try to guess if not provided. Supported: loadbalancer, haproxy, first"
+}
+
+
+

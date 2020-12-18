@@ -1,10 +1,12 @@
 ---
 - name: create k3s systemd service unit
   vars:
-    k3s_agent_args: |-
-      --token-file /etc/rancher/k3s/node-token \
-      --server https://{{ hostvars[groups['master'][0]]['private_ip'] }}:6443 \
+    k3s_agent_args: >-
+      --token-file /etc/rancher/k3s/node-token
+      --server https://{{ k3s_worker_master_address }}
+      --node-ip {{ private_ip }}
       {{ k3s_default_agent_args }}
+      {{ k3s_common_args }}
   template:
     src: templates/k3s.service.j2
     dest: /etc/systemd/system/k3s.service

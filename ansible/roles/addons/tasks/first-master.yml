@@ -1,0 +1,17 @@
+---
+- import_tasks: sync-manifests.yml
+  when: enabled_addons|length > 0
+
+- import_tasks: csi.yml
+  when: "'csi' in enabled_addons"
+
+- import_tasks: metallb.yml
+  when: "'metallb' in enabled_addons"
+
+- name: install contour
+  command: kubectl apply -k /tmp/kube-manifests/contour
+  when: "'contour' in enabled_addons"
+
+- name: install cert-manager
+  command: kubectl apply -k /tmp/kube-manifests/cert-manager
+  when: "'cert-manager' in enabled_addons"

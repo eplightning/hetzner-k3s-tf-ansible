@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+bases:
+- upstream
+resources:
+- secret.yaml
+patchesStrategicMerge:
+- non-default.yaml
+- verbosity-node.yaml
+- verbosity-controller.yaml

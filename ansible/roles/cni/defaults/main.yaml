@@ -1,0 +1,4 @@
+---
+calico_version: "3.17.1"
+calicoctl_url: https://github.com/projectcalico/calicoctl/releases/download/v{{ calico_version }}/calicoctl
+calicoctl_checksum: sha256:6fb8ed009a3c1ab49bba0be65609242b8a641ffee262da5e7dd954753054de66

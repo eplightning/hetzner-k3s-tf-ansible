@@ -1,0 +1,23 @@
+---
+kind: DaemonSet
+apiVersion: apps/v1
+metadata:
+  name: hcloud-csi-node
+  namespace: kube-system
+spec:
+  template:
+    spec:
+      containers:
+        - name: csi-node-driver-registrar
+          image: quay.io/k8scsi/csi-node-driver-registrar:v1.3.0
+          args:
+          - --csi-address=/csi/csi.sock
+          - --kubelet-registration-path=/var/lib/kubelet/plugins/csi.hetzner.cloud/csi.sock
+          - --v=2
+        - name: hcloud-csi-driver
+          image: hetznercloud/hcloud-csi-driver:1.5.1
+          env:
+          - name: LOG_LEVEL
+            value: warn
+        - name: liveness-probe
+          image: quay.io/k8scsi/livenessprobe:v2.0.0

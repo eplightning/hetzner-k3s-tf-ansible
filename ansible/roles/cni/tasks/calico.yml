@@ -1,0 +1,5 @@
+---
+- import_tasks: calicoctl.yml
+
+- import_tasks: calico-manifest.yml
+  when: inventory_hostname == groups["master"][0]

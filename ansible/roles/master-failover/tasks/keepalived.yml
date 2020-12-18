@@ -1,0 +1,43 @@
+---
+- name: install additional packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - keepalived
+    - python3
+    - python3-requests
+
+- name: create user for keepalived script execution
+  user:
+    name: keepalived_script
+    system: yes
+    create_home: no
+
+- name: copy notify script
+  copy:
+    src: files/hcloud-keepalived-notify.py
+    dest: /usr/local/bin/hcloud-keepalived-notify
+    mode: '0755'
+
+- name: create keepalived config
+  template:
+    src: templates/keepalived.conf.j2
+    dest: /etc/keepalived/keepalived.conf
+    mode: 0600
+  register: keepalived_config
+
+- name: create script config
+  template:
+    src: templates/hcloud.ini.j2
+    dest: /etc/keepalived/hcloud.ini
+    mode: 0600
+    owner: keepalived_script
+  register: script_config
+
+- name: start keepalived
+  systemd:
+    name: keepalived
+    daemon_reload: yes
+    enabled: yes
+    state: "{{ 'restarted' if (script_config.changed or keepalived_config.changed) else 'started' }}"

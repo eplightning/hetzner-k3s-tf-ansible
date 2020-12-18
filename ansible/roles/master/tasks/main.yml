@@ -1,8 +1,10 @@
 ---
 - import_tasks: install.yml
 
+- import_tasks: token.yml
+  when: k3s_ha_enabled
+
 - import_tasks: configure.yml
 
 - import_tasks: initial-manifests.yml
-
-- import_tasks: token.yml
+  when: inventory_hostname == groups["master"][0]

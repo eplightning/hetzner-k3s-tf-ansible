@@ -1,0 +1,13 @@
+---
+- name: copy calico manifest
+  template:
+    src: templates/calico.yaml
+    dest: /var/lib/rancher/k3s/server/manifests/calico.yaml
+
+- name: wait for calico-kube-controllers to be Available
+  retries: 5
+  delay: 10
+  shell: kubectl wait --for=condition=Available deployment/calico-kube-controllers -n kube-system
+  register: result
+  changed_when: false
+  until: result.rc == 0

@@ -18,8 +18,14 @@ resource "hcloud_network_subnet" "eu1" {
 }
 
 resource "hcloud_server_network" "kube_master_main" {
-  server_id  = hcloud_server.kube_master.id
+  count = var.masters_count
+
+  server_id  = hcloud_server.kube_master[count.index].id
   network_id = hcloud_network.main.id
+
+  lifecycle {
+    ignore_changes = [alias_ips]
+  }
 }
 
 resource "hcloud_server_network" "kube_worker_main" {
@@ -29,13 +35,14 @@ resource "hcloud_server_network" "kube_worker_main" {
   network_id = hcloud_network.main.id
 }
 
-resource "hcloud_rdns" "kube_master0" {
-  count = var.master_external_hostname != "" ? 1 : 0
+resource "hcloud_floating_ip" "apiserver_fip" {
+  count = var.master_apiserver_loadbalancer == "fip" ? 1 : 0
 
-  server_id = hcloud_server.kube_master.id
+  name = "kube-apiserver"
+  labels = var.labels
 
-  ip_address = hcloud_server.kube_master.ipv4_address
-  dns_ptr    = var.master_external_hostname
+  type = "ipv4"
+  home_location = data.hcloud_location.location1.name
 }
 
 resource "hcloud_floating_ip" "kube_fip" {
@@ -46,4 +53,45 @@ resource "hcloud_floating_ip" "kube_fip" {
 
   type          = "ipv4"
   home_location = data.hcloud_location.location1.name
+}
+
+resource "hcloud_load_balancer" "master" {
+  count = var.master_apiserver_loadbalancer == "hetznerlb" ? 1 : 0
+
+  load_balancer_type = "lb11"
+  network_zone = hcloud_network_subnet.eu1.network_zone
+  name = "kube-master"
+  labels = var.labels
+}
+
+resource "hcloud_load_balancer_network" "master" {
+  count = var.master_apiserver_loadbalancer == "hetznerlb" ? 1 : 0
+
+  load_balancer_id = hcloud_load_balancer.master[0].id
+  subnet_id = hcloud_network_subnet.eu1.id
+}
+
+resource "hcloud_load_balancer_target" "master" {
+  count = var.master_apiserver_loadbalancer == "hetznerlb" ? var.masters_count : 0
+
+  load_balancer_id = hcloud_load_balancer.master[0].id
+  type = "server"
+  server_id = hcloud_server_network.kube_master_main[count.index].server_id
+  use_private_ip = true
+}
+
+resource "hcloud_load_balancer_service" "apiserver" {
+  count = var.master_apiserver_loadbalancer == "hetznerlb" ? 1 : 0
+
+  load_balancer_id = hcloud_load_balancer.master[0].id
+  protocol = "tcp"
+  listen_port = 443
+  destination_port = 6443
+
+  health_check {
+    interval = 10
+    port = 6443
+    protocol = "tcp"
+    timeout = 10
+  }
 }

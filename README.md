@@ -4,13 +4,27 @@ Terraform and Ansible setup for provisioning K3s cluster using Hetzner Cloud inf
 
 ## Features
 
-- Ubuntu 20.04, k3s 1.18.3,
+- Ubuntu 20.04, k3s 1.19,
 
-- flannel CNI (host-gw) + k3s NetworkPolicy controller, using Hetzner's Private Network for node-to-node traffic,
+- Multiple supported CNI's:
+  - calico 3.17, using Hetzner's Private Network for node-to-node traffic,
+  - built-in flannel CNI (host-gw) + k3s NetworkPolicy controller, using Hetzner's Private Network for node-to-node traffic,
 
-- Full PV support using Hetzner Volumes (via CSI driver) or k3s local volume provisioner,
+- Support for HA control plane setups (Optional),
+  - k3s with embedded etcd,
+  - Every master node runs all control plane components (etcd, apiserver, scheduler, controller-manager),
+  - Node-local apiserver loadbalancer (HAProxy) for worker nodes,
+  - Multiple options for external HA access to apiserver:
+    - Hetzner Loadbalancer,
+    - Keepalived + HAProxy + Hetzner Floating IP,
+    - Keepalived + HAProxy + private network (only inside private network),
+    - None (if you want to use DNS or don't need HA for external clients),
 
-- Full LoadBalancer services support thanks to MetalLB and HCloud IP Floater. If you don't want to pay for Floating IPs - NodePorts still work pretty well,
+- Full PV support using Hetzner Volumes (via CSI driver, optional addon) or k3s local volume provisioner,
+
+- Full LoadBalancer services support, using one of two options:
+  - Hetzner Load Balancer
+  - Hetzner Floating IP - using MetalLB + HCloud IP Floater
 
 - Basic firewall setup to protect provisioned instances (since Hetzner Cloud doesn't have Firewall / Security Groups yet),
 
@@ -21,7 +35,7 @@ Terraform and Ansible setup for provisioning K3s cluster using Hetzner Cloud inf
 
 ## Requirements
 
-- Terraform 0.12,
+- Terraform 0.13,
 
 - Ansible 2.9 (might work on older versions, not tested),
 
@@ -30,6 +44,8 @@ Terraform and Ansible setup for provisioning K3s cluster using Hetzner Cloud inf
 - SSH key registered in Hetzner Cloud.
 
 ## Quickstart
+
+Copy `examples/example.tfvars` to `terraform/terraform.tfvars`. Customize it as needed, then provision cluster using:
 
 ```
 export HCLOUD_TOKEN="YOUR HETZNER TOKEN"
@@ -44,3 +60,4 @@ ansible-playbook -i inventory/hosts.ini cluster-setup.yml
 ## Customization
 
 Available Terraform variables are defined in `terraform/variables.tf` file.
+Example configurations are available in `examples` directory.

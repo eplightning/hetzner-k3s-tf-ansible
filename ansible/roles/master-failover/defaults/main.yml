@@ -1,0 +1,6 @@
+---
+keepalived_install: no
+failover_ip: ""
+failover_floating_ip: ""
+failover_type: "privatenetwork"
+failover_password: "password"

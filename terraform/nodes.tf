@@ -14,7 +14,9 @@ locals {
 }
 
 resource "hcloud_server" "kube_master" {
-  name   = "kube-master0"
+  count = var.masters_count
+
+  name   = "kube-master${count.index}"
   labels = var.labels
 
   server_type = var.master_server_type

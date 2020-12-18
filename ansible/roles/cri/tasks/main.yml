@@ -1,0 +1,3 @@
+---
+- import_tasks: embedded.yml
+  when: container_runtime_type == 'embedded'

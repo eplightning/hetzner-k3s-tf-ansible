@@ -8,8 +8,3 @@
   template:
     src: templates/hcloud-ccm.yml.j2
     dest: /var/lib/rancher/k3s/server/manifests/hcloud-ccm.yaml
-
-- name: copy hcloud csi manifest
-  template:
-    src: templates/hcloud-csi.yml.j2
-    dest: /var/lib/rancher/k3s/server/manifests/hcloud-csi.yaml

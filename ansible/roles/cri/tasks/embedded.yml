@@ -1,0 +1,11 @@
+---
+- name: create symlinks
+  file:
+    force: yes
+    state: link
+    src: /usr/local/bin/k3s
+    path: /usr/local/bin/{{ item }}
+    follow: no
+  loop:
+    - crictl
+    - ctr

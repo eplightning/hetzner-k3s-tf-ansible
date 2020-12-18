@@ -1,0 +1,6 @@
+---
+- name: configure rsyslog
+  template:
+    dest: /etc/rsyslog.d/01-k3s.conf
+    src: templates/01-k3s.conf.j2
+  notify: restart rsyslog

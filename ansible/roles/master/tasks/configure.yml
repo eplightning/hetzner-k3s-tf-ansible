@@ -1,25 +1,51 @@
 ---
 - name: create k3s systemd service unit
   vars:
-    k3s_server_args: |-
-      --advertise-address {{ private_ip }} \
-      --cluster-cidr {{ k3s_cluster_cidr }} \
-      --service-cidr {{ k3s_service_cidr }} \
-      --cluster-dns {{ k3s_cluster_dns }} \
-      --tls-san {{ private_ip }} \
-      --tls-san {{ public_ip }} \
-      {% if master_external_hostname|length %}
-      --tls-san {{ master_external_hostname }} \
+    k3s_server_args: >-
+      --advertise-address {{ k3s_advertise_address }}
+      --advertise-port {{ k3s_advertise_port }}
+      --https-listen-port {{ k3s_listen_port }}
+      --node-ip {{ private_ip }}
+      --cluster-cidr {{ k3s_cluster_cidr }}
+      --service-cidr {{ k3s_service_cidr }}
+      --cluster-dns {{ k3s_cluster_dns }}
+      --tls-san {{ private_ip }}
+      --tls-san {{ public_ip }}
+      {% if k3s_loadbalancer_address|length %}
+      --tls-san {{ k3s_loadbalancer_address }}
       {% endif %}
+      {% if k3s_external_address|length %}
+      --tls-san {{ k3s_external_address }}
+      {% endif %}
+      {% if k3s_ha_enabled and inventory_hostname == groups["master"][0] %}
+      --cluster-init
+      {% elif k3s_ha_enabled %}
+      --server https://{{ hostvars[groups["master"][0]]["private_ip"] }}:{{ k3s_listen_port }}
+      {% endif %}
+      {{ k3s_common_args }}
       {{ k3s_default_server_args }}
   template:
     src: templates/k3s.service.j2
     dest: /etc/systemd/system/k3s.service
   register: k3s_unit
 
-- name: start k3s server
+- name: start first k3s server
   systemd:
     name: k3s
     daemon_reload: yes
     enabled: yes
     state: "{{ 'restarted' if (k3s_binary.changed or k3s_unit.changed) else 'started' }}"
+  delegate_to: "{{ groups['master'][0] }}"
+  run_once: true
+
+- name: start remaining k3s servers
+  systemd:
+    name: k3s
+    daemon_reload: yes
+    enabled: yes
+    state: "{{ 'restarted' if (k3s_binary.changed or k3s_unit.changed) else 'started' }}"
+  register: k3s_systemd_startup_result
+  until: k3s_systemd_startup_result is not failed
+  retries: 3
+  delay: 10
+  when: inventory_hostname != groups["master"][0]

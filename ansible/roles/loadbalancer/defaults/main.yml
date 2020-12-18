@@ -1,0 +1,5 @@
+---
+haproxy_install: no
+haproxy_listen_address: "*"
+haproxy_listen_port: "443"
+haproxy_backend_port: "6443"

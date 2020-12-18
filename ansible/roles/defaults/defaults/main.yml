@@ -1,0 +1,19 @@
+k3s_cluster_cidr: '10.60.0.0/16'
+cri_socket: /var/run/crio/crio.sock
+container_runtime_type: embedded
+cni_type: embedded
+k3s_version: v1.19.5+k3s1
+k3s_download_url: https://github.com/rancher/k3s/releases/download/{{ k3s_version }}/k3s
+k3s_checksum: sha256:ea98892d42794bc518419b34963559505e8b2909461c971ba72cc5d126201a76
+pause_image: k8s.gcr.io/pause:3.2
+k3s_common_args: >-
+  --kubelet-arg cloud-provider=external
+  {% if container_runtime_type != 'embedded' %}
+  --container-runtime-endpoint "{{ cri_socket }}"
+  {% endif %}
+  {% if cni_type != 'embedded' %}
+  --no-flannel
+  {% else %}
+  --flannel-iface enp7s0
+  {% endif %}
+  --pause-image "{{ pause_image }}"
