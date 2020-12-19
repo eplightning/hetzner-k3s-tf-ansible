@@ -6,17 +6,6 @@ global_defs {
 vrrp_instance KUBE_MASTER {
     state BACKUP
 
-    {% if failover_type == 'fip' %}
-    interface eth0
-    unicast_src_ip {{ public_ip }}
-    unicast_peer {
-    {% for host in groups['master'] %}
-    {% if inventory_hostname != host %}
-        {{ hostvars[host]['public_ip'] }}
-    {% endif %}
-    {% endfor %}
-    }
-    {% else %}
     interface enp7s0
     unicast_src_ip {{ private_ip }}
     unicast_peer {
@@ -26,7 +15,6 @@ vrrp_instance KUBE_MASTER {
     {% endif %}
     {% endfor %}
     }
-    {% endif %}
 
     virtual_router_id 50
     priority 100
@@ -40,6 +28,6 @@ vrrp_instance KUBE_MASTER {
     }
 
     virtual_ipaddress {
-        {{ failover_ip }}
+        {{ failover_ip }}/32 dev {% if failover_type == 'fip' %}eth0{% else %}enp7s0{% endif %}
     }
 }
