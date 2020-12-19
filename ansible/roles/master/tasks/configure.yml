@@ -24,6 +24,7 @@
       {% endif %}
       {{ k3s_common_args }}
       {{ k3s_default_server_args }}
+      {{ master_extra_args }}
   template:
     src: templates/k3s.service.j2
     dest: /etc/systemd/system/k3s.service
@@ -34,7 +35,7 @@
     name: k3s
     daemon_reload: yes
     enabled: yes
-    state: "{{ 'restarted' if (k3s_binary.changed or k3s_unit.changed) else 'started' }}"
+    state: "{{ 'restarted' if (k3s_binary.changed or k3s_unit.changed or k3s_registries_config.changed) else 'started' }}"
   delegate_to: "{{ groups['master'][0] }}"
   run_once: true
 
@@ -43,7 +44,7 @@
     name: k3s
     daemon_reload: yes
     enabled: yes
-    state: "{{ 'restarted' if (k3s_binary.changed or k3s_unit.changed) else 'started' }}"
+    state: "{{ 'restarted' if (k3s_binary.changed or k3s_unit.changed or k3s_registries_config.changed) else 'started' }}"
   register: k3s_systemd_startup_result
   until: k3s_systemd_startup_result is not failed
   retries: 3

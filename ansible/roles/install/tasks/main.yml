@@ -14,3 +14,16 @@
     path: /usr/local/bin/{{ item }}
   loop:
     - kubectl
+
+- name: make sure /etc/rancher/k3s exists
+  file:
+    path: /etc/rancher/k3s
+    state: directory
+
+- name: write registries config file
+  when: registries_config|length
+  copy:
+    content: "{{ registries_config }}"
+    dest: /etc/rancher/k3s/registries.yaml
+    mode: "0600"
+  register: k3s_registries_config

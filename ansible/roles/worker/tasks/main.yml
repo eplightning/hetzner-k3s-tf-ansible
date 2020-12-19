@@ -1,6 +1,4 @@
 ---
-- import_tasks: install.yml
-
 - import_tasks: token.yml
 
 - import_tasks: configure.yml

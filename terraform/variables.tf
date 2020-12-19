@@ -86,6 +86,24 @@ variable "master_ha_enabled" {
   description = "Setup K3s in HA mode. If true, etcd datastore will be used instead of sqlite. Will be forced to true if masters_count > 1"
 }
 
+variable "registries_config" {
+  type = string
+  default = ""
+  description = "Image registries config (https://rancher.com/docs/k3s/latest/en/installation/private-registry/)"
+}
+
+variable "master_extra_args" {
+  type = string
+  default = ""
+  description = "Extra arguments to be passed to k3s masters"
+}
+
+variable "worker_extra_args" {
+  type = string
+  default = ""
+  description = "Extra arguments to be passed to k3s masters"
+}
+
 variable "master_apiserver_loadbalancer" {
   type = string
   default = "none"

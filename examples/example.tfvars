@@ -49,6 +49,24 @@ fips_count = 1
 # - metallb (CANNOT BE USED WITH use_hetzner_loadbalancers=true)
 enabled_addons = ["contour", "cert-manager", "csi", "metallb"]
 
+# Container image registries configuration
+# see: https://rancher.com/docs/k3s/latest/en/installation/private-registry/
+registries_config = <<EOF
+configs:
+  "docker.io":
+    auth:
+      username: "username"
+      password: "password"
+EOF
+
+# Extra arguments to be passed to master's k3s
+# You can pass extra apiserver, controller-manager or scheduler flags here, see: https://rancher.com/docs/k3s/latest/en/installation/install-options/server-config/
+master_extra_args = "--secrets-encryption"
+
+# Extra arguments to be passed to worker's k3s
+# You can pass extra apiserver, controller-manager or scheduler flags here, see: https://rancher.com/docs/k3s/latest/en/installation/install-options/agent-config/
+worker_extra_args = ""
+
 #
 # HA OPTIONS
 #

@@ -12,6 +12,7 @@
   - role: loadbalancer
     vars:
       haproxy_install: "{{ haproxy_master_install }}"
+  - install
   - master
   - cni
 
@@ -23,6 +24,7 @@
       haproxy_install: "{{ haproxy_worker_install }}"
       haproxy_listen_address: "127.0.0.1"
       haproxy_listen_port: "6443"
+  - install
   - worker
 
 - hosts: master

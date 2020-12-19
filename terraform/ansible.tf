@@ -32,6 +32,10 @@ resource "local_file" "hosts" {
     enabled_addons : var.enabled_addons,
     cni_type : var.cni_type,
     use_hetzner_loadbalancers : var.use_hetzner_loadbalancers,
+    registries_config : var.registries_config,
+
+    master_extra_args : var.master_extra_args,
+    worker_extra_args : var.worker_extra_args,
 
     master_ha_enabled : local.ha_enabled,
     master_loadbalancer : var.master_apiserver_loadbalancer,
