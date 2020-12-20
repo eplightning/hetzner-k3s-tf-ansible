@@ -67,6 +67,18 @@ master_extra_args = "--secrets-encryption"
 # You can pass extra apiserver, controller-manager or scheduler flags here, see: https://rancher.com/docs/k3s/latest/en/installation/install-options/agent-config/
 worker_extra_args = ""
 
+# Additional YAML manifest file to apply
+additional_manifest = <<EOF
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: test
+  namespace: kube-system
+data:
+  key: "value"
+EOF
+
 #
 # HA OPTIONS
 #

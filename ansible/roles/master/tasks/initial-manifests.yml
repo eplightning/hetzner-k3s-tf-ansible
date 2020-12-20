@@ -8,3 +8,9 @@
   template:
     src: templates/hcloud-ccm.yml.j2
     dest: /var/lib/rancher/k3s/server/manifests/hcloud-ccm.yaml
+
+- name: copy additional manifest
+  when: additional_manifest|length
+  copy:
+    content: "{{ additional_manifest }}"
+    dest: /var/lib/rancher/k3s/server/manifests/extra.yaml

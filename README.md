@@ -37,7 +37,7 @@ Terraform and Ansible setup for provisioning K3s cluster using Hetzner Cloud inf
 
 - Terraform 0.13,
 
-- Ansible 2.9 (might work on older versions, not tested),
+- Ansible 2.9 or newer,
 
 - Hetzner Cloud API key,
 

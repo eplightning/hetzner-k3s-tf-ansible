@@ -1,10 +1,15 @@
 ---
-- name: install additional packages
+- name: install haproxy
   apt:
-    name: "{{ item }}"
+    name: haproxy
+    state: present
+  register: haproxy_package
+
+- name: upgrade haproxy
+  apt:
+    name: haproxy
     state: latest
-  loop:
-    - haproxy
+  register: haproxy_upgrade
 
 - name: create haproxy config
   template:
@@ -17,4 +22,4 @@
     name: haproxy
     daemon_reload: yes
     enabled: yes
-    state: "{{ 'restarted' if haproxy_config.changed else 'started' }}"
+    state: "{{ 'restarted' if haproxy_package.changed else ('reloaded' if (haproxy_config.changed or haproxy_upgrade.changed) else 'started') }}"

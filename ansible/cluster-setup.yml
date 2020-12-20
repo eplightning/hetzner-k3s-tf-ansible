@@ -8,12 +8,12 @@
 - hosts: master
   roles:
   - defaults
-  - master-failover
+  - install
+  - master
   - role: loadbalancer
     vars:
       haproxy_install: "{{ haproxy_master_install }}"
-  - install
-  - master
+  - master-failover
   - cni
 
 - hosts: worker

@@ -40,4 +40,4 @@
     name: keepalived
     daemon_reload: yes
     enabled: yes
-    state: "{{ 'restarted' if (script_config.changed or keepalived_config.changed) else 'started' }}"
+    state: "{{ 'restarted' if script_config.changed else ('reloaded' if keepalived_config.changed else 'started') }}"

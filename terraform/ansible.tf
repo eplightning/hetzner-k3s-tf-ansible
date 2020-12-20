@@ -33,6 +33,7 @@ resource "local_file" "hosts" {
     cni_type : var.cni_type,
     use_hetzner_loadbalancers : var.use_hetzner_loadbalancers,
     registries_config : var.registries_config,
+    additional_manifest : var.additional_manifest,
 
     master_extra_args : var.master_extra_args,
     worker_extra_args : var.worker_extra_args,

@@ -128,5 +128,10 @@ variable "worker_master_connection" {
   description = "How should workers connect to master servers. Will try to guess if not provided. Supported: loadbalancer, haproxy, first"
 }
 
+variable "additional_manifest" {
+  type = string
+  default = ""
+  description = "Additional manifest"
+}
 
 

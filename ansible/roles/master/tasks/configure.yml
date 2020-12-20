@@ -47,6 +47,7 @@
     state: "{{ 'restarted' if (k3s_binary.changed or k3s_unit.changed or k3s_registries_config.changed) else 'started' }}"
   register: k3s_systemd_startup_result
   until: k3s_systemd_startup_result is not failed
+  throttle: 1
   retries: 3
   delay: 10
   when: inventory_hostname != groups["master"][0]
