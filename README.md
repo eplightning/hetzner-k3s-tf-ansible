@@ -33,6 +33,8 @@ Terraform and Ansible setup for provisioning K3s cluster using Hetzner Cloud inf
     - Contour Ingress Controller,
     - cert-manager.
 
+- Support for upgrading and scaling up the master/worker nodes
+
 ## Requirements
 
 - Terraform 0.13,
