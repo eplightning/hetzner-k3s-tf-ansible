@@ -64,6 +64,8 @@ resource "local_file" "hosts" {
       network : hcloud_server_network.kube_worker_main[i]
     }],
 
-    floating_ips : hcloud_floating_ip.kube_fip
+    floating_ips : hcloud_floating_ip.kube_fip,
+
+    node_firewall : var.firewall_setup == "node" || var.firewall_setup == "both",
   })
 }

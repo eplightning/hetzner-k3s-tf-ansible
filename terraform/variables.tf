@@ -134,4 +134,9 @@ variable "additional_manifest" {
   description = "Additional manifest"
 }
 
+variable "firewall_setup" {
+  type = string
+  default = "hcloud"
+  description = "How to setup firewall. Hcloud means Hetzner Cloud Firewall, node means iptables on nodes. Supported: hcloud, node, both, none"
+}
 

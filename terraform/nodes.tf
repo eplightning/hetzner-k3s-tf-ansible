@@ -23,7 +23,13 @@ resource "hcloud_server" "kube_master" {
   image       = "ubuntu-20.04"
   user_data   = local.cloud_init
   location    = data.hcloud_location.location1.name
-  ssh_keys    = [data.hcloud_ssh_key.main.id]
+  ssh_keys    = [
+    data.hcloud_ssh_key.main.id
+  ]
+
+  firewall_ids = local.hcloud_firewall_enabled ? [
+    hcloud_firewall.firewall[0].id
+  ] : []
 }
 
 resource "hcloud_server" "kube_worker" {
@@ -36,5 +42,11 @@ resource "hcloud_server" "kube_worker" {
   image       = "ubuntu-20.04"
   user_data   = local.cloud_init
   location    = data.hcloud_location.location1.name
-  ssh_keys    = [data.hcloud_ssh_key.main.id]
+  ssh_keys    = [
+    data.hcloud_ssh_key.main.id
+  ]
+
+  firewall_ids = local.hcloud_firewall_enabled ? [
+    hcloud_firewall.firewall[0].id
+  ] : []
 }

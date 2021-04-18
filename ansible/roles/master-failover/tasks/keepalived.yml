@@ -1,4 +1,22 @@
 ---
+- name: ensure net.ipv4.ip_nonlocal_bind sysctl is present
+  sysctl:
+    name: net.ipv4.ip_nonlocal_bind
+    value: "1"
+    state: present
+    sysctl_set: yes
+    reload: yes
+    sysctl_file: /etc/sysctl.d/12-keepalived.conf
+
+- name: ensure net.ipv6.ip_nonlocal_bind sysctl is present
+  sysctl:
+    name: net.ipv6.ip_nonlocal_bind
+    value: "1"
+    state: present
+    sysctl_set: yes
+    reload: yes
+    sysctl_file: /etc/sysctl.d/12-keepalived.conf
+
 - name: install additional packages
   apt:
     name: "{{ item }}"

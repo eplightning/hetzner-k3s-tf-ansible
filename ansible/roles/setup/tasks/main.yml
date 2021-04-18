@@ -4,6 +4,7 @@
 - import_tasks: network.yml
 
 - import_tasks: firewall.yml
+  when: node_firewall_setup
 
 - import_tasks: sysctl.yml
 

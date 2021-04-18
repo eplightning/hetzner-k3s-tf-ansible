@@ -1,10 +1,10 @@
 # hetzner-k3s-tf-ansible
 
-Terraform and Ansible setup for provisioning K3s cluster using Hetzner Cloud infrastructure.
+Terraform and Ansible setup for provisioning a K3s cluster using Hetzner Cloud infrastructure.
 
 ## Features
 
-- Ubuntu 20.04, k3s 1.19,
+- Ubuntu 20.04, k3s 1.20,
 
 - Multiple supported CNI's:
   - calico 3.17, using Hetzner's Private Network for node-to-node traffic,
@@ -26,7 +26,10 @@ Terraform and Ansible setup for provisioning K3s cluster using Hetzner Cloud inf
   - Hetzner Load Balancer
   - Hetzner Floating IP - using MetalLB + HCloud IP Floater
 
-- Basic firewall setup to protect provisioned instances (since Hetzner Cloud doesn't have Firewall / Security Groups yet),
+- Basic firewall setup to protect provisioned instances, supported options include:
+  - Hetzner Cloud Firewall,
+  - iptables setup on nodes,
+  - Both of them at once or none of them.
 
 - Support for various optional addons:
     - MetalLB + HCloud IP Floater,
@@ -37,7 +40,7 @@ Terraform and Ansible setup for provisioning K3s cluster using Hetzner Cloud inf
 
 ## Requirements
 
-- Terraform 0.13,
+- Terraform 0.13 (tested on 0.15),
 
 - Ansible 2.9 or newer,
 

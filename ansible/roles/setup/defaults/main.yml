@@ -1,2 +1,3 @@
 ---
 allow_public_vrrp: no
+node_firewall_setup: yes

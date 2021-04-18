@@ -106,8 +106,9 @@ master_apiserver_loadbalancer = "none"
 # UNSUPPORTED for now, `loadbalancer` option has issues. Use `privateip` option for standard ClusterIP loadbalancing of cluster internal kube-apiserver traffic
 # master_apiserver_advertise = "privateip"
 
-
-
-
-
-
+# Configures firewall setup, options:
+# - `hcloud` - Create and use Hetzner Cloud Firewall
+# - `node` - Basic iptables setup on nodes
+# - `both` - Setup both of the options above
+# - `none` - Do not setup any kind of firewall
+firewall_setup = "hcloud"
