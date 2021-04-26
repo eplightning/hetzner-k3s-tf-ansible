@@ -41,7 +41,7 @@ resource "local_file" "hosts" {
     master_ha_enabled : local.ha_enabled,
     master_loadbalancer : var.master_apiserver_loadbalancer,
     master_advertise : var.master_apiserver_advertise,
-    worker_master_connection : var.worker_master_connection != "" ? var.worker_master_connection : (local.ha_enabled ? "haproxy" : "first"),
+    worker_master_connection : var.worker_master_connection,
     master_external_address : var.master_apiserver_external_address,
 
     master_internal_ip : local.apiserver_internal_ip_map[var.master_apiserver_loadbalancer],

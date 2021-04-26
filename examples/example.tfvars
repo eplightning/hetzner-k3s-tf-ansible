@@ -91,10 +91,10 @@ master_ha_enabled = true
 master_apiserver_external_address = "some-extra.domain.com"
 
 # Defines how worker nodes will connect to master nodes:
-# haproxy - HIGHLY RECOMMENDED (default) - setups node-local loadbalancers on worker nodes
+# first - (usually what you want) connects to first master and then uses k3s internal loadbalancer
 # loadbalancer - connects via provisioned loadbalancer (depending on master_apiserver_loadbalancer)
-# first - connects to first master only - only makes sense for non-HA setups
-worker_master_connection = "haproxy"
+# haproxy - setups node-local loadbalancers on worker nodes - mostly redundant due to k3s tunnel
+worker_master_connection = "first"
 
 # Use `none` if you don't need HA for clients accessing apiserver OUTSIDE of cluster. Even in that case you can still provide decent HA by using standard DNS (but that's outside of this project's scope).
 # If you do need HA for external clients, supported options are:

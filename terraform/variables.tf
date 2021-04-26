@@ -124,7 +124,7 @@ variable "master_apiserver_external_address" {
 
 variable "worker_master_connection" {
   type = string
-  default = ""
+  default = "first"
   description = "How should workers connect to master servers. Will try to guess if not provided. Supported: loadbalancer, haproxy, first"
 }
 

@@ -13,7 +13,6 @@ Terraform and Ansible setup for provisioning a K3s cluster using Hetzner Cloud i
 - Support for HA control plane setups (Optional),
   - k3s with embedded etcd,
   - Every master node runs all control plane components (etcd, apiserver, scheduler, controller-manager),
-  - Node-local apiserver loadbalancer (HAProxy) for worker nodes,
   - Multiple options for external HA access to apiserver:
     - Hetzner Loadbalancer,
     - Keepalived + HAProxy + Hetzner Floating IP,
