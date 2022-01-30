@@ -8,4 +8,4 @@ spec:
       serviceAccountName: hcloud-ip-floater
       containers:
         - name: hcloud-ip-floater
-          image: bslawianowski/hcloud-ip-floater:latest
+          image: ghcr.io/eplightning/hcloud-ip-floater:v0.2.0

@@ -1,33 +1,33 @@
 ---
 - hosts: all
   roles:
-  - defaults
-  - setup
-  - cri
+    - defaults
+    - setup
+    - cri
 
 - hosts: master
   roles:
-  - defaults
-  - install
-  - master
-  - role: loadbalancer
-    vars:
-      haproxy_install: "{{ haproxy_master_install }}"
-  - master-failover
-  - cni
+    - defaults
+    - install
+    - master
+    - role: loadbalancer
+      vars:
+        haproxy_install: "{{ haproxy_master_install }}"
+    - master-failover
+    - cni
 
 - hosts: worker
   roles:
-  - defaults
-  - role: loadbalancer
-    vars:
-      haproxy_install: "{{ haproxy_worker_install }}"
-      haproxy_listen_address: "127.0.0.1"
-      haproxy_listen_port: "6443"
-  - install
-  - worker
+    - defaults
+    - role: loadbalancer
+      vars:
+        haproxy_install: "{{ haproxy_worker_install }}"
+        haproxy_listen_address: "127.0.0.1"
+        haproxy_listen_port: "6443"
+    - install
+    - worker
 
 - hosts: master
   roles:
-  - defaults
-  - addons
+    - defaults
+    - addons

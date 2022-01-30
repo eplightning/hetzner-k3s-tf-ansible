@@ -76,8 +76,8 @@ variable "use_hetzner_loadbalancers" {
 
 variable "enabled_addons" {
   type        = list(string)
-  default     = ["contour", "cert-manager", "csi"]
-  description = "Which addons to install. Supported: contour, cert-manager, metallb, csi"
+  default     = ["csi"]
+  description = "Which addons to install. Supported: metallb, csi"
 }
 
 variable "master_ha_enabled" {

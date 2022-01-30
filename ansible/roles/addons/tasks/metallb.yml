@@ -7,16 +7,6 @@
 - name: apply MetalLB manifest
   command: kubectl apply -k /tmp/kube-manifests/metallb
 
-- name: check if MetalLB memberlist secret exists
-  command: kubectl get secret memberlist -n metallb-system
-  register: metallb_secret_exists
-  changed_when: false
-  failed_when: metallb_secret_exists.rc != 0 and metallb_secret_exists.rc != 1
-
-- name: create MetalLB memberlist secret
-  shell: kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
-  when: metallb_secret_exists.rc == 1
-
 - name: template IP floater config
   template:
     src: templates/floater-config.yaml.j2
