@@ -31,9 +31,7 @@ Terraform and Ansible setup for provisioning a K3s cluster using Hetzner Cloud i
   - Both of them at once or none of them.
 
 - Support for various optional addons:
-    - MetalLB + HCloud IP Floater,
-    - Contour Ingress Controller,
-    - cert-manager.
+    - MetalLB + HCloud IP Floater
 
 - Support for upgrading and scaling up the master/worker nodes
 
