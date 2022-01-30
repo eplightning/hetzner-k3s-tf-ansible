@@ -4,10 +4,10 @@ Terraform and Ansible setup for provisioning a K3s cluster using Hetzner Cloud i
 
 ## Features
 
-- Ubuntu 20.04, k3s 1.20,
+- Ubuntu 20.04, k3s 1.23,
 
 - Multiple supported CNI's:
-  - calico 3.17, using Hetzner's Private Network for node-to-node traffic,
+  - calico 3.21, using Hetzner's Private Network for node-to-node traffic,
   - built-in flannel CNI (host-gw) + k3s NetworkPolicy controller, using Hetzner's Private Network for node-to-node traffic,
 
 - Support for HA control plane setups (Optional),
@@ -37,7 +37,7 @@ Terraform and Ansible setup for provisioning a K3s cluster using Hetzner Cloud i
 
 ## Requirements
 
-- Terraform 0.13 (tested on 0.15),
+- Terraform 0.13 or newer (tested on 1.1),
 
 - Ansible 2.9 or newer,
 
